@@ -1,6 +1,8 @@
 {
   "name": "coreHTTP",
-  "releases": [],
+  "releases": [
+    "v1.10.1"
+  ],
   "branches": [
     "main"
   ]
