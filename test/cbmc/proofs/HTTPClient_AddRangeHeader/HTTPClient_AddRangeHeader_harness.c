@@ -1,6 +1,6 @@
 /*
- * coreHTTP v3.0.0
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * coreHTTP
+ * Copyright (C) 2024 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -30,6 +30,19 @@
 #include "core_http_client.h"
 
 #include "http_cbmc_state.h"
+
+char * httpHeaderStrncpy( char * pDest,
+                          const char * pSrc,
+                          size_t len,
+                          uint8_t isField );
+
+char * __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy( char * pDest,
+                                                                  const char * pSrc,
+                                                                  size_t len,
+                                                                  uint8_t isField )
+{
+    return httpHeaderStrncpy( pDest, pSrc, len, isField );
+}
 
 void HTTPClient_AddRangeHeader_harness()
 {

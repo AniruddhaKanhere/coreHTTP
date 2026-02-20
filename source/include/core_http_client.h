@@ -1,6 +1,6 @@
 /*
- * coreHTTP v3.0.0
- * Copyright (C) 2022 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * coreHTTP
+ * Copyright (C) 2024 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -38,6 +38,16 @@
     extern "C" {
 #endif
 /* *INDENT-ON* */
+
+/**
+ * @cond DOXYGEN_IGNORE
+ * The current version of this library.
+ *
+ * If HTTP_LIBRARY_VERSION ends with + it represents the version in development
+ * after the numbered release.
+ */
+#define HTTP_LIBRARY_VERSION    "v3.1.2"
+/** @endcond */
 
 /* HTTP_DO_NOT_USE_CUSTOM_CONFIG allows building the HTTP Client library
  * without a config file. If a config file is provided, the
@@ -154,6 +164,27 @@
 #define HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG    0x2U
 
 /**
+ * @defgroup http_response_option_flags HTTPResponse_t Flags
+ * @brief Flags for #HTTPResponse_t.respOptionFlags.
+ * These flags control the behavior of response parsing.
+ *
+ * Flags should be bitwise-ORed with each other to change the behavior of
+ * #HTTPClient_ReceiveAndParseHttpResponse and #HTTPClient_Send.
+ */
+
+/**
+ * @ingroup http_response_option_flags
+ * @brief Set this flag to indicate that the response body should not be parsed.
+ *
+ * Setting this will cause parser to stop after parsing the headers. Portion of
+ * the raw body may be available in #HTTPResponse_t.pBody and
+ * #HTTPResponse_t.bodyLen.
+ *
+ * This flag is valid only for #HTTPResponse_t.respOptionFlags.
+ */
+#define HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG    0x1U
+
+/**
  * @ingroup http_constants
  * @brief Flag that represents End of File byte in the range specification of
  * a Range Request.
@@ -165,7 +196,7 @@
  *  - When the requested range is for the last N bytes of the file.
  * In both cases, this value should be used for the "rangeEnd" parameter.
  */
-#define HTTP_RANGE_REQUEST_END_OF_FILE              -1
+#define HTTP_RANGE_REQUEST_END_OF_FILE          -1
 
 /**
  * @ingroup http_enum_types
@@ -290,6 +321,17 @@ typedef enum HTTPStatus
      * - #HTTPClient_Send
      */
     HTTPSecurityAlertInvalidContentLength,
+
+    /**
+     * @brief Represents the paused state of the HTTP parser.
+     *
+     * This state indicates that the parser has encountered a pause condition
+     * and is waiting for further input.
+     *
+     * @see HTTPClient_Send
+     * @see HTTPClient_ReceiveAndParseHttpResponse
+     */
+    HTTPParserPaused,
 
     /**
      * @brief An error occurred in the third-party parsing library.
@@ -534,6 +576,13 @@ typedef struct HTTPResponse
      * This variable is set to 1 after all headers have been received and processed by #HTTPClient_Send.
      */
     uint8_t areHeadersComplete;
+
+    /**
+     * @brief Flags to control the behavior of response parsing.
+     *
+     * Please see @ref http_response_option_flags for more information.
+     */
+    uint32_t respOptionFlags;
 
     /**
      * @brief Flags of useful headers found in the response.

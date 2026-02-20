@@ -1,6 +1,6 @@
 /*
- * coreHTTP v3.0.0
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * coreHTTP
+ * Copyright (C) 2024 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -34,7 +34,7 @@
 #include <string.h>
 #include <stdint.h>
 
-void * httpHeaderStrncpy( char * pDest,
+char * httpHeaderStrncpy( char * pDest,
                           const char * pSrc,
                           size_t len,
                           uint8_t isField )

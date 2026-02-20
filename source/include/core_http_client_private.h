@@ -1,6 +1,6 @@
 /*
- * coreHTTP v3.0.0
- * Copyright (C) 2022 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * coreHTTP
+ * Copyright (C) 2024 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -167,6 +167,12 @@
 #define LLHTTP_STOP_PARSING                 HPE_USER
 
 /**
+ * @brief Return value for llhttp registered callback to signal to pause
+ * further execution.
+ */
+#define LLHTTP_PAUSE_PARSING                HPE_PAUSED
+
+/**
  * @brief Return value for llhttp_t.on_headers_complete to signal
  * that the HTTP response has no body and to halt further execution.
  */
@@ -201,7 +207,7 @@
  * @brief The state of the response message parsed after function
  * #parseHttpResponse returns.
  */
-typedef enum HTTPParsingState_t
+typedef enum HTTPParsingState
 {
     HTTP_PARSING_NONE = 0,   /**< The parser has not started reading any response. */
     HTTP_PARSING_INCOMPLETE, /**< The parser found a partial response. */
@@ -241,6 +247,13 @@ typedef struct findHeaderContext
  *          v
  * +--------+------------+
  * |onStatus             |
+ * +--------+------------+
+ *          |
+ *          |
+ *          |
+ *          v
+ * +--------+------------+
+ * |onStatusComplete     |
  * +--------+------------+
  *          |
  *          |

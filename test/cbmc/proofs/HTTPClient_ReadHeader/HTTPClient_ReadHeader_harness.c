@@ -1,6 +1,6 @@
 /*
- * coreHTTP v3.0.0
- * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * coreHTTP
+ * Copyright (C) 2024 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * SPDX-License-Identifier: MIT
  *
@@ -30,6 +30,16 @@
 #include "core_http_client.h"
 
 #include "http_cbmc_state.h"
+
+void llhttp_init( llhttp_t * parser,
+                  llhttp_type_t type,
+                  const llhttp_settings_t * settings )
+{
+}
+
+void llhttp_settings_init( llhttp_settings_t * settings )
+{
+}
 
 void HTTPClient_ReadHeader_harness()
 {
